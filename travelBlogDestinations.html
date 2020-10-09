@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinations</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="travelBlog.css">
+</head>
+<body class = "body">
+    <div class = "row justify-content-center">
+        <a href="travelBlog.html" class = "navButtons">Home</a>
+        <a href="" class = "navButtons">Add</a>
+    </div>
+    <div class = "row justify-content-center">
+        <div class = "col-4 destinationDetails">
+            <form id = "addLocationForm">
+                <input type="text" placeholder="City" id = "cityInput">
+                <input type="text" placeholder = "Country"id="countryInput">
+                <br>
+                <input type="date" placeholder="Date Traveled" id = "dateInput">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id = "detailDescription" class = "row justify-content-center"></div> 
+    <script src = "travelBlog.js"></script>
+</body>
+</html>
