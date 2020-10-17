@@ -4,6 +4,9 @@ const detailDescription = document.getElementById("detailDescription")
 const cityInput = document.getElementById("cityInput")
 const countryInput = document.getElementById("countryInput")
 const dateInput = document.getElementById("dateInput")
+const key = "d6f595f46674408259ff7b3919758466"
+
+let places
 
 const getInfo = () => {
     let places = localStorage.getItem("places")
@@ -13,28 +16,16 @@ const getInfo = () => {
     }
     places = JSON.parse(places)
 
-    places.forEach((place) => {
-        place.weatherInfo = getWeatherInfo(place.city)
-    })
     return places
 }
 
-function getWeatherInfo(cityName) {
-    const key = "d6f595f46674408259ff7b3919758466"
-    // const cityName = getInfo(place.city)
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${key}&units=metric`)
-        .then((response) => response.json())
-        .then((json) => {
-            const info = json
-            const weather = info.main.temp
-        // console.log(cityName)
-        // console.log(weather)
-        return weather 
-        })
+const getWeatherInfo = async (cityName) => {
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${key}&units=metric`)
+    const json = await response.json()
+    return json.main.temp
 }
 
-const savePlaces = (eachPlace) => {
-    const places = getInfo()
+const savePlaces = async (eachPlace) => {
     places.push(eachPlace)
 
     const stringifiedPlaces = JSON.stringify(places)
@@ -63,7 +54,8 @@ const newPlace = (event) => {
 
 addLocationForm.addEventListener("submit", newPlace)
 
-const addDestination = (eachPlace) => {
+const addDestination = async(eachPlace) => {
+    eachPlace.weatherInfo = await getWeatherInfo(eachPlace.city)
     savePlaces(eachPlace)
     createInfo()
 }
@@ -81,8 +73,7 @@ const textDescription = (eachPlace) => {
 const createInfo = () => {
     detailDescription.innerHTML = ""
 
-    getInfo().forEach((eachPlace, index) => {
-
+    places.forEach((eachPlace, index) => {
         const childElement = document.createElement("div")
         childElement.className = "col-4 destinationDetails"
         childElement.classList.add("eachDiv")
@@ -101,11 +92,14 @@ const createInfo = () => {
 }
 
 const removePlace = (index) => {
-    const places = getInfo()
     places.splice(index, 1)
 
     const stringifiedPlaces = JSON.stringify(places)
     localStorage.setItem("places", stringifiedPlaces)
 }
 
+
+places = getInfo()
+
 createInfo()
+
